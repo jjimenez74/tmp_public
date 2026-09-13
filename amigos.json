@@ -1,0 +1,214 @@
+{
+  "amigos": [
+    {
+      "id": "mery_42",
+      "nombre": "Mery",
+      "amigo_secreto": "Eurípides"
+    },
+    {
+      "id": "euripides_41",
+      "nombre": "Eurípides",
+      "amigo_secreto": "Mery"
+    },
+    {
+      "id": "jenny_cuervo_40",
+      "nombre": "Jenny Cuervo",
+      "amigo_secreto": "Dorita"
+    },
+    {
+      "id": "dorita_39",
+      "nombre": "Dorita",
+      "amigo_secreto": "Jenny Cuervo"
+    },
+    {
+      "id": "leonor_38",
+      "nombre": "Leonor",
+      "amigo_secreto": "Analí"
+    },
+    {
+      "id": "anali_37",
+      "nombre": "Analí",
+      "amigo_secreto": "Leonor"
+    },
+    {
+      "id": "marcela_36",
+      "nombre": "Marcela",
+      "amigo_secreto": "Santiago"
+    },
+    {
+      "id": "santiago_35",
+      "nombre": "Santiago",
+      "amigo_secreto": "Marcela"
+    },
+    {
+      "id": "kike_34",
+      "nombre": "Kike",
+      "amigo_secreto": "Laura"
+    },
+    {
+      "id": "laura_33",
+      "nombre": "Laura",
+      "amigo_secreto": "Kike"
+    },
+    {
+      "id": "migue_32",
+      "nombre": "Migue",
+      "amigo_secreto": "Juan Pablo"
+    },
+    {
+      "id": "juan_pablo_31",
+      "nombre": "Juan Pablo",
+      "amigo_secreto": "Migue"
+    },
+    {
+      "id": "julio_machuca_30",
+      "nombre": "Julio Machuca",
+      "amigo_secreto": "Rocío"
+    },
+    {
+      "id": "rocio_29",
+      "nombre": "Rocío",
+      "amigo_secreto": "Julio Machuca"
+    },
+    {
+      "id": "camilo_28",
+      "nombre": "Camilo",
+      "amigo_secreto": "Alejandro"
+    },
+    {
+      "id": "alejandro_27",
+      "nombre": "Alejandro",
+      "amigo_secreto": "Camilo"
+    },
+    {
+      "id": "nelly_26",
+      "nombre": "Nelly",
+      "amigo_secreto": "Julio Salamanca"
+    },
+    {
+      "id": "julio_salamanca_25",
+      "nombre": "Julio Salamanca",
+      "amigo_secreto": "Nelly"
+    },
+    {
+      "id": "fercho_24",
+      "nombre": "Fercho",
+      "amigo_secreto": "Angie"
+    },
+    {
+      "id": "angie_23",
+      "nombre": "Angie",
+      "amigo_secreto": "Fercho"
+    },
+    {
+      "id": "pili_22",
+      "nombre": "Pili",
+      "amigo_secreto": "Álex"
+    },
+    {
+      "id": "alex_21",
+      "nombre": "Álex",
+      "amigo_secreto": "Pili"
+    },
+    {
+      "id": "edgar_20",
+      "nombre": "Edgar",
+      "amigo_secreto": "Azucena"
+    },
+    {
+      "id": "azucena_19",
+      "nombre": "Azucena",
+      "amigo_secreto": "Edgar"
+    },
+    {
+      "id": "jairo_18",
+      "nombre": "Jairo",
+      "amigo_secreto": "Jenny Ortúa"
+    },
+    {
+      "id": "jenny_ortua_17",
+      "nombre": "Jenny Ortúa",
+      "amigo_secreto": "Jairo"
+    },
+    {
+      "id": "maria_paula_16",
+      "nombre": "María Paula",
+      "amigo_secreto": "Samantha"
+    },
+    {
+      "id": "samantha_15",
+      "nombre": "Samantha",
+      "amigo_secreto": "María Paula"
+    },
+    {
+      "id": "mauricio_14",
+      "nombre": "Mauricio",
+      "amigo_secreto": "Claudia"
+    },
+    {
+      "id": "claudia_13",
+      "nombre": "Claudia",
+      "amigo_secreto": "Mauricio"
+    },
+    {
+      "id": "juan_david_12",
+      "nombre": "Juan David",
+      "amigo_secreto": "Alison"
+    },
+    {
+      "id": "alison_11",
+      "nombre": "Alison",
+      "amigo_secreto": "Juan David"
+    },
+    {
+      "id": "claudia_claudia_10",
+      "nombre": "Claudia",
+      "amigo_secreto": "Valentina"
+    },
+    {
+      "id": "valentina_9",
+      "nombre": "Valentina",
+      "amigo_secreto": "Claudia"
+    },
+    {
+      "id": "jorge_8",
+      "nombre": "Jorge",
+      "amigo_secreto": "Michelle"
+    },
+    {
+      "id": "michelle_7",
+      "nombre": "Michelle",
+      "amigo_secreto": "Jorge"
+    },
+    {
+      "id": "paula_6",
+      "nombre": "Paula",
+      "amigo_secreto": "Camila"
+    },
+    {
+      "id": "camila_5",
+      "nombre": "Camila",
+      "amigo_secreto": "Paula"
+    },
+    {
+      "id": "andres_4",
+      "nombre": "Andrés",
+      "amigo_secreto": "Adriana"
+    },
+    {
+      "id": "adriana_3",
+      "nombre": "Adriana",
+      "amigo_secreto": "Andrés"
+    },
+    {
+      "id": "isabela_2",
+      "nombre": "Isabela",
+      "amigo_secreto": "Samuel"
+    },
+    {
+      "id": "samuel_1",
+      "nombre": "Samuel",
+      "amigo_secreto": "Isabela"
+    }
+  ]
+}

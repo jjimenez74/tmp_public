@@ -1,408 +1,373 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#f0f2f5">
-<title>MotoAsistente v2</title>
-<style>
-:root{--bg:#f0f2f5;--surface:#fff;--surface2:#f5f6f8;--border:#e0e3e8;--text:#1a1e2a;--text2:#4a5568;--text3:#8895a7;--brand:#E8580A;--ok:#2d9b5a;--warn:#d4850a;--crit:#cc3333;--radius:12px}
-[data-theme="dark"]{--bg:#0b0e14;--surface:#141a24;--surface2:#1c2430;--border:#2a3444;--text:#eef0f4;--text2:#a0aab8;--text3:#5a6a7a}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.4}
-#app{height:100%;display:flex;flex-direction:column}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁 Tu Amigo Secreto 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* ═ HEADER ═ */
-.header{height:50px;display:flex;align-items:center;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--border);z-index:50;flex-shrink:0}
-.logo{font-weight:900;font-size:15px}.logo span{color:var(--brand)}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.hdr-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700}
-.hdr-dot{width:7px;height:7px;border-radius:50%}
-.theme-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
 
-/* ═ VIEWS ═ */
-.view{display:none;flex:1;min-height:0;flex-direction:column;overflow:hidden;opacity:0;transition:opacity .2s ease}
-.view.active{display:flex;opacity:1}
-.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 14px}
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
 
-/* Sparkline */
-.sparkline{display:flex;align-items:flex-end;gap:1px;height:28px;margin-top:6px}
-.spark-bar{flex:1;background:var(--ok);border-radius:2px 2px 0 0;min-width:2px;transition:height .3s}
-.spark-bar.warn{background:var(--warn)}.spark-bar.crit{background:var(--crit)}
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
 
-/* ═ HOME 3D ═ */
-#viewer3d{flex:1;position:relative;background:#e2e6ec}
-[data-theme="dark"] #viewer3d{background:#0d1118}
-#viewer3d canvas{display:block;width:100%;height:100%}
-.icons-col{position:absolute;top:0;bottom:0;width:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:10;padding:10px 0}
-.icons-col.left{left:6px}.icons-col.right{right:6px}
-.ic-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:transform .1s}
-.ic-btn:active{transform:scale(.88)}
-.ic-pct{font-size:13px;font-weight:900;font-family:'Courier New',monospace;order:-1}
-.ic-circle{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:2.5px solid var(--ok);box-shadow:0 2px 10px rgba(0,0,0,.12)}
-[data-theme="dark"] .ic-circle{background:rgba(20,26,36,.88)}
-.ic-circle svg{width:24px;height:24px;stroke-width:2}
-.ic-circle.ok{border-color:var(--ok);color:var(--ok)}.ic-circle.warn{border-color:var(--warn);color:var(--warn)}.ic-circle.crit{border-color:var(--crit);color:var(--crit);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-.doc-counters{position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
-.doc-counter{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,.9);backdrop-filter:blur(6px);border-radius:12px;padding:5px 12px;border:1px solid var(--border)}
-[data-theme="dark"] .doc-counter{background:rgba(20,26,36,.85)}
-.dc-days{font-size:20px;font-weight:900;font-family:monospace}.dc-label{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-top:1px}
-.color-palette{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:10;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);border-radius:18px;padding:4px 10px;border:1px solid var(--border)}
-[data-theme="dark"] .color-palette{background:rgba(20,26,36,.85)}
-.cp-dot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent}.cp-dot:hover{transform:scale(1.15)}.cp-dot.active{border-color:#fff;box-shadow:0 0 6px rgba(255,255,255,.5)}
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-/* Floating card (system preview) */
-.float-card{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9);z-index:20;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;width:260px;box-shadow:0 8px 30px rgba(0,0,0,.15);opacity:0;pointer-events:none;transition:all .2s ease}
-.float-card.open{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:all}
-.fc-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.fc-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.fc-icon svg{width:18px;height:18px;stroke-width:2}
-.fc-name{font-size:14px;font-weight:800;flex:1}
-.fc-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px}
-.fc-sensors{display:flex;flex-direction:column;gap:6px}
-.fc-sensor{display:flex;justify-content:space-between;align-items:center;font-size:13px}
-.fc-sensor .name{color:var(--text2)}.fc-sensor .val{font-weight:800;font-family:monospace}
-.fc-close{margin-top:12px;width:100%;padding:8px;border:1px solid var(--border);background:var(--surface2);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;text-align:center;color:var(--text2)}
-.fc-close:hover{border-color:var(--brand);color:var(--brand)}
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
 
-/* Ad banner */
-.ad-wrap{flex-shrink:0;border-top:1px solid var(--border);position:relative}
-.ad-banner{height:100px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:height .3s,opacity .3s}
-.ad-banner:active{opacity:.9}
-.ad-banner img{width:100%;height:100%;object-fit:cover}
-.ad-banner.off{height:0;opacity:0;pointer-events:none}
-.ad-toggle{position:absolute;top:4px;right:6px;z-index:2;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:10px;font-size:9px;padding:2px 8px;cursor:pointer;font-weight:600;opacity:.7}
-.ad-toggle:hover{opacity:1}
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
 
-/* ═ GENERIC COMPONENTS ═ */
-.sec-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin:14px 0 8px}
-.sec-title:first-child{margin-top:0}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px}
-.card h3{font-size:14px;font-weight:800;margin-bottom:8px}
-.row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
-.row:last-child{border:none}
-.list-item{display:flex;align-items:center;gap:10px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;cursor:pointer}
-.list-item:active{opacity:.85}
-.li-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.li-body{flex:1;min-width:0}.li-title{font-size:13px;font-weight:700}.li-sub{font-size:11px;color:var(--text3);margin-top:2px}
-.li-val{font-size:12px;font-weight:800;white-space:nowrap}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
-.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center}
-.stat-val{font-size:20px;font-weight:900;color:var(--brand);font-family:monospace}.stat-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;margin-top:2px}
-.bg-ok{background:rgba(45,155,90,.1);color:var(--ok)}.bg-warn{background:rgba(212,133,10,.1);color:var(--warn)}.bg-crit{background:rgba(204,51,51,.1);color:var(--crit)}
-.v-ok{color:var(--ok)}.v-warn{color:var(--warn)}.v-crit{color:var(--crit)}
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
 
-/* Milestone timeline */
-.milestone{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px}
-.ms-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;background:var(--surface2);border:2px solid var(--border);flex-shrink:0}
-.ms-icon.done{background:var(--brand);border-color:var(--brand);color:#fff}
-.ms-body{flex:1}.ms-title{font-size:13px;font-weight:700}.ms-sub{font-size:11px;color:var(--text3);margin-top:1px}
-.ms-level{font-size:10px;font-weight:800;color:var(--brand)}
+        .content {
+            padding: 40px 20px;
+            text-align: center;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 30px;
+        }
 
-/* ═ NAV ═ */
-.nav{height:62px;display:flex;align-items:center;justify-content:space-around;background:var(--surface);border-top:1px solid var(--border);flex-shrink:0;z-index:60;padding-bottom:env(safe-area-inset-bottom)}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 10px;cursor:pointer;border:none;background:none;color:var(--text3);font-size:9px;font-weight:700;font-family:inherit}
-.nav-btn svg{width:22px;height:22px;stroke-width:1.8}
-.nav-btn.active{color:var(--brand)}.nav-btn.active svg{stroke-width:2.4}
-.nav-btn.home-btn{margin-top:-14px}
-.nav-btn.home-btn .home-circle{width:46px;height:46px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(232,88,10,.3)}
-.nav-btn.home-btn svg{width:24px;height:24px;stroke:#fff;stroke-width:2.2}
+        .loading {
+            display: none;
+        }
 
-#loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--surface2);z-index:20}
-#loading.done{display:none}
-.spin{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--brand);border-radius:50%;animation:sp .7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-</style>
+        .loading.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #667eea;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading.active p {
+            color: #667eea;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .result {
+            display: none;
+        }
+
+        .result.active {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .greeting {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .greeting strong {
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .number-box {
+            background: #f8f9ff;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .number-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .number-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 4px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            margin: 20px auto;
+        }
+
+        .amigo-label {
+            font-size: 14px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .amigo-name {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 15px 0;
+            animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .heart {
+            font-size: 24px;
+            margin: 20px 0;
+            animation: heartBeat 1.2s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1); }
+        }
+
+        .footer {
+            background: #f8f9ff;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #eee;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .error-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .amigo-name {
+                font-size: 40px;
+            }
+
+            .number-display {
+                font-size: 40px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div id="app">
-  <header class="header">
-    <div class="logo">MOTO<span>ASISTENTE</span></div>
-    <div class="hdr-right">
-      <div class="hdr-pill" id="gPill" style="background:rgba(45,155,90,.08);color:var(--ok)"><div class="hdr-dot" style="background:var(--ok)"></div><span id="gText">Saludable</span></div>
-      <div class="theme-btn" onclick="toggleMotoStyle()">🎨</div>
-      <div class="theme-btn" onclick="toggleTheme()">🌓</div>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>🎁 Tu Amigo Secreto</h1>
+                <p>2026 - Descubre quién es</p>
+            </div>
+
+            <div class="content">
+                <!-- Loading -->
+                <div class="loading active" id="loading">
+                    <div class="spinner"></div>
+                    <p>Realizando sorteo mágico...</p>
+                </div>
+
+                <!-- Result -->
+                <div class="result" id="result">
+                    <div class="greeting">
+                        Hola <strong id="userName"></strong> ❤️
+                    </div>
+
+                    <div class="number-box">
+                        <div class="number-label">Tu número de verificación</div>
+                        <div class="number-display" id="randomNumber"></div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div>
+                        <div class="amigo-label">Tu Amigo Secreto Es</div>
+                        <div class="amigo-name" id="amigoName"></div>
+                        <div class="heart">💚</div>
+                    </div>
+
+                    <div style="margin-top: 20px; font-size: 12px; color: #999;">
+                        <p>🤫 Guarda bien este secreto</p>
+                        <p>Tu número: <strong id="smallNumber"></strong></p>
+                    </div>
+                </div>
+
+                <!-- Error -->
+                <div class="error" id="error" style="display: none;">
+                    <div class="error-icon">❌</div>
+                    <p>No encontramos tu acceso.</p>
+                    <p style="margin-top: 10px; font-size: 11px;">Verifica el enlace o contacta al organizador.</p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>✨ Este sorteo es completamente seguro y verificado ✨</p>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <!-- HOME -->
-  <div class="view active" id="v-home">
-    <div id="viewer3d">
-      <div id="loading"><div class="spin"></div></div>
-      <div class="doc-counters" id="docCounters"></div>
-      <div class="color-palette" id="colorPalette"></div>
-      <div class="icons-col left" id="icL"></div>
-      <div class="icons-col right" id="icR"></div>
-      <div class="float-card" id="floatCard"></div>
-    </div>
-    <div class="ad-wrap" id="adWrap">
-      <button class="ad-toggle" onclick="toggleAd(event)">✕</button>
-      <div class="ad-banner" id="adBanner" onclick="adClick()"></div>
-    </div>
-  </div>
+    <script>
+        // Obtener parámetro de URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const personaId = urlParams.get('id');
 
-  <!-- ALERTAS -->
-  <div class="view" id="v-alertas"><div class="scroll" id="alertContent"></div></div>
-  <!-- MECÁNICA -->
-  <div class="view" id="v-mecanica"><div class="scroll" id="mecContent"></div></div>
-  <!-- RECORDS -->
-  <div class="view" id="v-records"><div class="scroll" id="recContent"></div></div>
-  <!-- PERFIL -->
-  <div class="view" id="v-perfil"><div class="scroll" id="perContent"></div></div>
+        async function init() {
+            try {
+                // Cargar JSON
+                const response = await fetch('amigos.json');
+                const data = await response.json();
 
-  <!-- NAV: Alertas | Mecánica | HOME | Records | Perfil -->
-  <nav class="nav">
-    <button class="nav-btn" data-view="alertas" onclick="nav('alertas')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Alertas</button>
-    <button class="nav-btn" data-view="mecanica" onclick="nav('mecanica')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>Mecánica</button>
-    <button class="nav-btn home-btn active" data-view="home" onclick="nav('home')"><div class="home-circle"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg></div></button>
-    <button class="nav-btn" data-view="records" onclick="nav('records')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Records</button>
-    <button class="nav-btn" data-view="perfil" onclick="nav('perfil')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
-  </nav>
-</div>
+                // Buscar persona
+                const persona = data.amigos.find(p => p.id === personaId);
 
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"}}
-</script>
-<script type="module">
-import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+                if (!persona) {
+                    showError();
+                    return;
+                }
 
-// ═══ ICONS SVG ═══
-const IC={
-  motor:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15 1.65 1.65 0 003.17 14H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68 1.65 1.65 0 0010 3.17V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>',
-  rueda:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>',
-  frenos:'<circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>',
-  susp:'<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/>',
-  tanque:'<path d="M3 22h18M5 22V8l3-4h8l3 4v14"/><path d="M9 12h6"/>',
-  trans:'<circle cx="7" cy="17" r="3"/><circle cx="17" cy="7" r="3"/><path d="M7 14V7h7"/>',
-  elec:'<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>',
-  escape:'<path d="M4 14h2a2 2 0 002-2V8a2 2 0 012-2h8"/><path d="M18 6l3 3-3 3"/>',
-};
+                // Simular carga (1-2 segundos)
+                await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
 
-// ═══ SYSTEMS ═══
-const SYS=[
-  {id:'motor',ic:'motor',name:'Motor',side:'left',sensors:[{n:'Temperatura',v:82,u:'°C',max:120,w:90,c:105},{n:'RPM',v:3200,u:'rpm',max:12000,w:8000,c:10000},{n:'Vibración',v:0.4,u:'g',max:2,w:1.2,c:1.6}],tip:'Aceite cada 3,000 km.'},
-  {id:'rueda_del',ic:'rueda',name:'Rueda Del.',side:'left',sensors:[{n:'Presión',v:32,u:'PSI',max:45,w:28,c:22},{n:'Desgaste',v:35,u:'%',max:100,w:70,c:85}],tip:'Presión ideal: 30-33 PSI.'},
-  {id:'frenos',ic:'frenos',name:'Frenos',side:'left',sensors:[{n:'Pastillas',v:55,u:'%',max:100,w:70,c:85},{n:'Líquido',v:88,u:'%',max:100,w:40,c:20}],tip:'Pastillas al 80%.'},
-  {id:'suspension',ic:'susp',name:'Suspensión',side:'left',sensors:[{n:'Recorrido',v:65,u:'%',max:100,w:85,c:95},{n:'Aceite',v:78,u:'%',max:100,w:40,c:20}],tip:'Aceite barras c/18K km.'},
-  {id:'tanque',ic:'tanque',name:'Tanque',side:'right',sensors:[{n:'Nivel',v:72,u:'%',max:100,w:25,c:10},{n:'Consumo',v:3.2,u:'L/100',max:8,w:5,c:6.5}],tip:'Autonomía ~180 km.'},
-  {id:'rueda_tra',ic:'rueda',name:'Rueda Tras.',side:'right',sensors:[{n:'Presión',v:36,u:'PSI',max:45,w:28,c:22},{n:'Desgaste',v:52,u:'%',max:100,w:70,c:85}],tip:'Presión: 34-38 PSI.'},
-  {id:'transmision',ic:'trans',name:'Transmisión',side:'right',sensors:[{n:'Tensión',v:2.5,u:'cm',max:4,w:3,c:3.5},{n:'Desgaste',v:40,u:'%',max:100,w:70,c:85}],tip:'Lubricar c/500 km.'},
-  {id:'electrico',ic:'elec',name:'Eléctrico',side:'right',sensors:[{n:'Voltaje',v:12.6,u:'V',max:14.5,w:11.8,c:11.2},{n:'Carga',v:92,u:'%',max:100,w:30,c:15}],tip:'Batería: 12.4-13.2V.'},
-];
-const DOCS={soat:{name:'SOAT',label:'SOAT',vence:'2027-03-15'},rtm:{name:'Tecnomecánica',label:'RTM',vence:'2026-09-20'}};
+                // Generar número random único para esta sesión
+                const randomNum = Math.floor(Math.random() * 900000) + 100000;
 
-// ═══ STATE ═══
-function load(){const r=localStorage.getItem('ma_v2');if(r)return JSON.parse(r);const s={km:24830,pts:420,srv:12,galones:186,diasActivo:148,maxRuta:148,diasSinParar:12,sys:{},hist:generateHistory()};SYS.forEach(x=>{s.sys[x.id]=x.sensors.map(s=>s.v)});return s}
-function save(){localStorage.setItem('ma_v2',JSON.stringify(ST))}
-let ST=load();
-if(!ST.hist)ST.hist=generateHistory();
-if(!ST.galones){ST.galones=186;ST.diasActivo=148;ST.maxRuta=148;ST.diasSinParar=12}
+                // Registrar apertura
+                logOpening(persona, randomNum);
 
-function generateHistory(){const h=[];const now=Date.now();for(let i=29;i>=0;i--){const d=new Date(now-i*864e5);h.push({date:d.toISOString().slice(0,10),km:24830-i*18+Math.round(Math.random()*10),pDel:30+Math.round(Math.random()*4),pTra:34+Math.round(Math.random()*4),temp:75+Math.round(Math.random()*15),volt:12.2+Math.random()*0.6})}return h}
+                // Mostrar resultado
+                showResult(persona, randomNum);
 
-// ═══ HELPERS ═══
-function status(sys){let w='ok';sys.sensors.forEach((s,i)=>{const v=ST.sys[sys.id]?.[i]??s.v;if(v>=s.c)w='crit';else if(v>=s.w&&w!=='crit')w='warn'});return w}
-function mainPct(sys){const s=sys.sensors[0];const v=ST.sys[sys.id]?.[0]??s.v;return Math.round(Math.min(v/s.max*100,100))}
-function daysTo(d){return Math.ceil((new Date(d)-new Date())/864e5)}
-function updateGlobal(){let w=false,c=false;SYS.forEach(s=>{const st=status(s);if(st==='warn')w=true;if(st==='crit')c=true});const p=document.getElementById('gPill'),t=document.getElementById('gText');if(c){p.style.background='rgba(204,51,51,.08)';p.style.color='var(--crit)';t.textContent='¡Revisar!'}else if(w){p.style.background='rgba(212,133,10,.08)';p.style.color='var(--warn)';t.textContent='Atención'}else{p.style.background='rgba(45,155,90,.08)';p.style.color='var(--ok)';t.textContent='Saludable'}}
+            } catch (error) {
+                console.error(error);
+                showError();
+            }
+        }
 
-// ═══ NAV ═══
-window.nav=function(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById('v-'+v).classList.add('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));closeFloat();if(v==='alertas')renderAlertas();if(v==='mecanica')renderMecanica();if(v==='records')renderRecords();if(v==='perfil')renderPerfil()};
-window.toggleTheme=function(){const t=document.documentElement.getAttribute('data-theme');document.documentElement.setAttribute('data-theme',t==='dark'?'':'dark')};
+        function showResult(persona, randomNum) {
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('result').classList.add('active');
 
-// ═══ HOME: ICONS ═══
-function renderIcons(){const L=document.getElementById('icL'),R=document.getElementById('icR');L.innerHTML='';R.innerHTML='';SYS.forEach(sys=>{const st=status(sys),pct=mainPct(sys);const w=document.createElement('div');w.className='ic-btn';w.onclick=()=>showFloat(sys);const c=document.createElement('div');c.className='ic-circle '+st;c.innerHTML=`<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${IC[sys.ic]}</svg>`;const p=document.createElement('div');p.className='ic-pct v-'+st;p.textContent=pct+'%';w.appendChild(c);w.appendChild(p);(sys.side==='left'?L:R).appendChild(w)})}
+            document.getElementById('userName').textContent = persona.nombre;
+            document.getElementById('amigoName').textContent = persona.amigo_secreto;
+            document.getElementById('randomNumber').textContent = randomNum.toString();
+            document.getElementById('smallNumber').textContent = randomNum.toString();
 
-// ═══ FLOAT CARD (centered popup) ═══
-function showFloat(sys){
-  const st=status(sys);const fc=document.getElementById('floatCard');
-  let html=`<div class="fc-head"><div class="fc-icon bg-${st}"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${IC[sys.ic]}</svg></div><span class="fc-name">${sys.name}</span><span class="fc-badge bg-${st}">${st==='ok'?'OK':st==='warn'?'Atención':'Crítico'}</span></div><div class="fc-sensors">`;
-  sys.sensors.forEach((s,i)=>{const v=ST.sys[sys.id]?.[i]??s.v;const ss=v>=s.c?'crit':v>=s.w?'warn':'ok';html+=`<div class="fc-sensor"><span class="name">${s.n}</span><span class="val v-${ss}">${v} ${s.u}</span></div>`});
-  html+=`</div><div class="fc-close" onclick="closeFloat()">Cerrar</div>`;
-  fc.innerHTML=html;fc.classList.add('open');
-}
-window.closeFloat=function(){document.getElementById('floatCard').classList.remove('open')};
+            // Guardar en localStorage para el admin
+            let aperturas = JSON.parse(localStorage.getItem('aperturas') || '[]');
+            aperturas.push({
+                persona: persona.nombre,
+                amigo: persona.amigo_secreto,
+                id: personaId,
+                numero: randomNum,
+                hora: new Date().toLocaleString('es-CO'),
+                timestamp: Date.now()
+            });
+            localStorage.setItem('aperturas', JSON.stringify(aperturas));
+        }
 
-// ═══ DOCS ═══
-function renderDocs(){document.getElementById('docCounters').innerHTML=Object.values(DOCS).map(d=>{const days=daysTo(d.vence);const c=days<0?'var(--crit)':days<30?'var(--warn)':'var(--ok)';return`<div class="doc-counter"><span class="dc-days" style="color:${c}">${days}</span><span class="dc-label">${d.label}</span></div>`}).join('')}
+        function showError() {
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('error').style.display = 'flex';
+            document.getElementById('error').style.flexDirection = 'column';
+            document.getElementById('error').style.justifyContent = 'center';
+            document.getElementById('error').style.alignItems = 'center';
+            document.getElementById('error').style.minHeight = '300px';
+        }
 
-// ═══ ALERTAS ═══
-function renderAlertas(){let h='<div class="sec-title">Alertas activas</div>';let cnt=0;SYS.forEach(sys=>{const st=status(sys);if(st==='ok')return;cnt++;h+=`<div class="list-item"><div class="li-icon bg-${st}"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${IC[sys.ic]}</svg></div><div class="li-body"><div class="li-title">${sys.name}</div><div class="li-sub">${st==='crit'?'Acción inmediata requerida':'Revisar pronto'}</div></div><div class="li-val v-${st}">${st==='crit'?'CRÍTICO':'ATENCIÓN'}</div></div>`});if(!cnt)h+='<div style="text-align:center;padding:30px;color:var(--text3)">✅ Todo en orden</div>';h+='<div class="sec-title">Documentos</div>';Object.values(DOCS).forEach(d=>{const days=daysTo(d.vence);const st=days<0?'crit':days<30?'warn':'ok';h+=`<div class="list-item"><div class="li-icon bg-${st}">📄</div><div class="li-body"><div class="li-title">${d.name}</div><div class="li-sub">${days<0?'Vencido hace '+Math.abs(days)+' días':'Vence en '+days+' días'}</div></div><div class="li-val v-${st}">${days}d</div></div>`});document.getElementById('alertContent').innerHTML=h}
+        function logOpening(persona, randomNum) {
+            console.log(`✅ ${persona.nombre} abrió el sobre`);
+            console.log(`   Número: ${randomNum}`);
+            console.log(`   Amigo: ${persona.amigo_secreto}`);
+            console.log(`   Hora: ${new Date().toLocaleString()}`);
+        }
 
-// ═══ MECÁNICA ═══
-function sparkline(data, max, warnVal, critVal){
-  return '<div class="sparkline">'+data.slice(-30).map(v=>{const pct=Math.round(v/max*100);const st=v>=critVal?'crit':v>=warnVal?'warn':'';return`<div class="spark-bar ${st}" style="height:${Math.max(pct,5)}%"></div>`}).join('')+'</div>';
-}
-function renderMecanica(){
-  let h='<div class="sec-title">Sistemas del vehículo</div>';
-  SYS.forEach(sys=>{const st=status(sys);h+=`<div class="list-item" style="flex-wrap:wrap"><div class="li-icon bg-${st}"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">${IC[sys.ic]}</svg></div><div class="li-body"><div class="li-title">${sys.name}</div><div class="li-sub">${sys.tip}</div></div><div class="li-val v-${st}">${st==='ok'?'OK':st==='warn'?'ATENCIÓN':'CRÍTICO'}</div></div>`});
-
-  // Sparklines from 30-day history
-  if(ST.hist&&ST.hist.length>0){
-    h+='<div class="sec-title">Tendencia 30 días</div>';
-    h+='<div class="card"><h3>Presión delantera (PSI)</h3>'+sparkline(ST.hist.map(d=>d.pDel),45,28,22)+'</div>';
-    h+='<div class="card"><h3>Presión trasera (PSI)</h3>'+sparkline(ST.hist.map(d=>d.pTra),45,28,22)+'</div>';
-    h+='<div class="card"><h3>Temperatura motor (°C)</h3>'+sparkline(ST.hist.map(d=>d.temp),120,90,105)+'</div>';
-    h+='<div class="card"><h3>Voltaje batería (V)</h3>'+sparkline(ST.hist.map(d=>d.volt),14.5,11.8,11.2)+'</div>';
-  }
-
-  h+='<div class="sec-title">Historial de servicios</div>';
-  const servicios=[{t:'Cambio de aceite',km:'23,000',cost:'$48.000',f:'18/06/2026'},{t:'Pastillas traseras',km:'24,200',cost:'$65.000',f:'15/07/2026'},{t:'Kit de arrastre',km:'18,500',cost:'$220.000',f:'05/03/2026'},{t:'Batería nueva',km:'19,200',cost:'$95.000',f:'22/03/2026'},{t:'Ajuste válvulas',km:'17,000',cost:'$120.000',f:'28/01/2026'}];
-  servicios.forEach(s=>{h+=`<div class="list-item"><div class="li-icon" style="background:var(--surface2)">🔧</div><div class="li-body"><div class="li-title">${s.t}</div><div class="li-sub">${s.km} km · ${s.f}</div></div><div class="li-val" style="color:var(--brand)">${s.cost}</div></div>`});
-  h+=`<div style="text-align:center;font-size:12px;color:var(--text3);padding:8px">Total invertido: <b style="color:var(--brand)">$548.000</b></div>`;
-  document.getElementById('mecContent').innerHTML=h;
-}
-
-// ═══ RECORDS ═══
-function renderRecords(){
-  let h=`<div class="stat-grid"><div class="stat-box"><div class="stat-val">${ST.km.toLocaleString()}</div><div class="stat-label">Km totales</div></div><div class="stat-box"><div class="stat-val">${ST.galones}</div><div class="stat-label">Galones</div></div><div class="stat-box"><div class="stat-val">${ST.diasActivo}</div><div class="stat-label">Días activo</div></div></div>`;
-  h+='<div class="sec-title">Logros y niveles</div>';
-  const milestones=[
-    {icon:'🚀',title:'Día cero',sub:'Registraste tu moto',level:'Nivel 1',done:true},
-    {icon:'🏁',title:'Primeros 100 km',sub:'Ya le tomaste el ritmo',level:'Nivel 2',done:ST.km>=100},
-    {icon:'⚡',title:'500 km recorridos',sub:'Motero frecuente',level:'Nivel 3',done:ST.km>=500},
-    {icon:'🔥',title:'1,000 km',sub:'Rutero confirmado',level:'Nivel 4',done:ST.km>=1000},
-    {icon:'💎',title:'5,000 km',sub:'Viajero experto',level:'Nivel 5',done:ST.km>=5000},
-    {icon:'🏆',title:'10,000 km',sub:'Leyenda de la carretera',level:'Nivel 6',done:ST.km>=10000},
-    {icon:'🌍',title:'25,000 km',sub:'Vuelta a Colombia',level:'Nivel 7',done:ST.km>=25000},
-    {icon:'⛽',title:'50 galones',sub:'Tanqueador serial',level:'Galones I',done:ST.galones>=50},
-    {icon:'⛽',title:'100 galones',sub:'Estación favorita',level:'Galones II',done:ST.galones>=100},
-    {icon:'⛽',title:'200 galones',sub:'Socio premium',level:'Galones III',done:ST.galones>=200},
-    {icon:'📏',title:'Ruta más larga: '+ST.maxRuta+' km',sub:'Tu récord personal',level:'Explorador',done:ST.maxRuta>=100},
-    {icon:'📅',title:ST.diasSinParar+' días seguidos',sub:'Sin faltar un día',level:'Constancia',done:ST.diasSinParar>=7},
-    {icon:'🔧',title:ST.srv+' servicios',sub:'Moto bien cuidada',level:'Responsable',done:ST.srv>=5},
-    {icon:'✅',title:'Todo en verde',sub:'Todos los sistemas OK',level:'Perfección',done:SYS.every(s=>status(s)==='ok')},
-  ];
-  milestones.forEach(m=>{h+=`<div class="milestone"><div class="ms-icon${m.done?' done':''}">${m.icon}</div><div class="ms-body"><div class="ms-title">${m.title}</div><div class="ms-sub">${m.sub}</div></div><div class="ms-level">${m.done?'✓ '+m.level:'🔒'}</div></div>`});
-  document.getElementById('recContent').innerHTML=h;
-}
-
-// ═══ PERFIL ═══
-function renderPerfil(){document.getElementById('perContent').innerHTML=`
-  <div class="card"><h3>🏍️ Suzuki Gixxer 150</h3><div class="row"><span>Año</span><b>2023</b></div><div class="row"><span>Placa</span><b style="font-family:monospace">FLX 42E</b></div><div class="row"><span>Kilometraje</span><b>${ST.km.toLocaleString()} km</b></div><div class="row"><span>Servicios</span><b>${ST.srv}</b></div><div class="row"><span>Puntos</span><b style="color:var(--brand)">${ST.pts}</b></div></div>
-  <div class="card"><h3>📄 Documentos</h3>${Object.values(DOCS).map(d=>{const days=daysTo(d.vence);const c=days<0?'var(--crit)':days<30?'var(--warn)':'var(--ok)';return`<div class="row"><span>${d.name}</span><b style="color:${c}">${days<0?'Vencido':'Vigente'} (${Math.abs(days)}d)</b></div>`}).join('')}</div>
-  <div class="card" style="text-align:center"><h3>🎨 Personalización</h3><p style="font-size:13px;color:var(--text2);margin-bottom:10px">Cambia los colores de tu moto</p><button onclick="window.location='gamificar.html'" style="width:100%;padding:12px;border:none;border-radius:10px;background:var(--brand);color:#fff;font-size:14px;font-weight:700;cursor:pointer">Editar moto →</button></div>
-  <div class="card"><h3>⚙️ Configuración</h3><div class="row"><span>Tema</span><button onclick="toggleTheme()" style="border:1px solid var(--border);background:var(--surface2);color:var(--text);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Cambiar</button></div></div>`}
-
-// ═══ AD BANNER (imágenes de banners/ o fallback texto) ═══
-const ADS=[
-  {img:'banners/banner_01.jpg',bg:'linear-gradient(135deg,#1a3050,#2a5080)',t:'🪖 Cascos desde $89.900',s:'Envío gratis',c:'#fff'},
-  {img:'banners/banner_02.jpg',bg:'linear-gradient(135deg,#401515,#6a2525)',t:'🛡️ Seguro todo riesgo $32K/mes',s:'Cotiza gratis',c:'#fcc'},
-  {img:'banners/banner_03.jpg',bg:'linear-gradient(135deg,#153015,#2a5a2a)',t:'🔧 Kit mantenimiento $125.000',s:'Aceite+filtro+bujía',c:'#cfc'},
-  {img:'banners/banner_04.jpg',bg:'linear-gradient(135deg,#2a1a3a,#4a2a5a)',t:'📱 Soporte celular $45.000',s:'Resistente al agua',c:'#dcf'},
-  {img:'banners/banner_05.jpg',bg:'linear-gradient(135deg,#2a1a0a,#5a3a1a)',t:'🛞 Llantas desde $180.000',s:'Envío gratis',c:'#fec'},
-];
-let adIdx=0;
-function renderAd(){
-  const ad=ADS[adIdx];const el=document.getElementById('adBanner');
-  // Intentar cargar imagen, si no existe usar fallback texto
-  const img=new Image();
-  img.onload=()=>{el.innerHTML='';el.style.background='none';el.appendChild(img)};
-  img.onerror=()=>{el.style.background=ad.bg;el.innerHTML=`<div style="text-align:center"><div style="font-size:13px;font-weight:800;color:${ad.c}">${ad.t}</div><div style="font-size:10px;color:${ad.c};opacity:.7;margin-top:2px">${ad.s}</div></div>`};
-  img.src=ad.img;img.style.cssText='width:100%;height:100%;object-fit:cover';
-}
-setInterval(()=>{adIdx=(adIdx+1)%ADS.length;renderAd()},5000);
-window.adClick=function(){alert('🔗 Redirigiendo (simulación)')};
-window.toggleAd=function(e){e.stopPropagation();const b=document.getElementById('adBanner');const btn=document.querySelector('.ad-toggle');if(b.classList.contains('off')){b.classList.remove('off');btn.textContent='✕'}else{b.classList.add('off');btn.textContent='▲ Ad'}};
-
-// ═══ SIMULATE ═══
-function sim(){SYS.forEach(sys=>{sys.sensors.forEach((s,i)=>{if(!ST.sys[sys.id])ST.sys[sys.id]=sys.sensors.map(x=>x.v);const d=(Math.random()-.5)*s.max*.012;let v=ST.sys[sys.id][i]+d;ST.sys[sys.id][i]=Math.round(Math.max(0,Math.min(s.max*.98,v))*10)/10})});save();updateGlobal();renderIcons();renderDocs()}
-setInterval(sim,3000);
-
-// ═══ THREE.JS ═══
-let motoModel=null,motoStyleIdx=0;
-const viewer=document.getElementById('viewer3d');
-const scene=new THREE.Scene();scene.background=new THREE.Color(0xe2e6ec);
-const camera=new THREE.PerspectiveCamera(45,1,.01,100);camera.position.set(1.5,1,2.5);
-const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.6;viewer.appendChild(renderer.domElement);
-const ctrl=new OrbitControls(camera,renderer.domElement);ctrl.enableDamping=true;ctrl.dampingFactor=.08;ctrl.autoRotate=true;ctrl.autoRotateSpeed=1.2;ctrl.target.set(0,.3,0);ctrl.maxDistance=5;ctrl.minDistance=1;
-scene.add(new THREE.HemisphereLight(0xffffff,0x88aacc,2));
-const kL=new THREE.DirectionalLight(0xffffff,3.5);kL.position.set(4,7,4);kL.castShadow=true;kL.shadow.mapSize.set(1024,1024);kL.shadow.bias=-.002;scene.add(kL);
-scene.add(new THREE.DirectionalLight(0xaabbdd,1.8).translateX(-5).translateY(4).translateZ(-2));
-scene.add(new THREE.DirectionalLight(0xffeedd,1.2).translateY(3).translateZ(-6));
-scene.add(new THREE.PointLight(0x6688aa,1,6).translateY(-.5));
-scene.add(new THREE.DirectionalLight(0xffffff,.8).translateY(2).translateZ(5));
-const ground=new THREE.Mesh(new THREE.CircleGeometry(3,48),new THREE.MeshStandardMaterial({color:0x1a2a4a,roughness:.85,metalness:.1}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
-
-// Load saved colors from gamificar
-function getSavedColors(){try{return JSON.parse(localStorage.getItem('ma_v2_colors'))}catch(e){return null}}
-
-// Bounding boxes for zone painting (same as gamificar.html)
-const ZONE_BOXES=[
-  {id:'manubrio',cx:0,cy:1.10,cz:0.60,w:0.75,h:0.40,d:0.35},
-  {id:'tanque',cx:0,cy:0.85,cz:0.20,w:0.45,h:0.35,d:0.45},
-  {id:'rueda_del',cx:0,cy:0.30,cz:0.75,w:0.25,h:0.60,d:0.60},
-  {id:'motor',cx:0,cy:0.45,cz:0.00,w:0.45,h:0.45,d:0.50},
-  {id:'asiento',cx:0,cy:0.80,cz:-0.30,w:0.40,h:0.30,d:0.50},
-  {id:'rueda_tra',cx:0,cy:0.30,cz:-0.75,w:0.25,h:0.60,d:0.60},
-];
-function inBox(x,y,z,b){return Math.abs(x-b.cx)<=b.w*.5&&Math.abs(y-b.cy)<=b.h*.5&&Math.abs(z-b.cz)<=b.d*.5}
-
-new GLTFLoader().load('base_color.glb',g=>{const o=g.scene;const box=new THREE.Box3().setFromObject(o);const sz=box.getSize(new THREE.Vector3());const cn=box.getCenter(new THREE.Vector3());o.position.sub(cn);const s=2/Math.max(sz.x,sz.y,sz.z);o.scale.setScalar(s);const b2=new THREE.Box3().setFromObject(o);const s2=b2.getSize(new THREE.Vector3());const c2=b2.getCenter(new THREE.Vector3());o.position.y-=c2.y-s2.y/2;o.traverse(c=>{if(c.isMesh){c.castShadow=true;c.receiveShadow=true}});scene.add(o);motoModel=o;applyMotoStyle();document.getElementById('loading').classList.add('done')},null,e=>{console.error(e)});
-
-const PALETTE=[{solid:0x556688,wire:0x88ccff},{solid:0x446655,wire:0x66ffaa},{solid:0x665544,wire:0xffaa66},{solid:0x554466,wire:0xcc88ff},{solid:0x664444,wire:0xff6666},{solid:0x445566,wire:0x66ddff},{solid:0x555555,wire:0xffffff}];
-let palIdx=0;
-function renderPalette(){document.getElementById('colorPalette').innerHTML=PALETTE.map((c,i)=>`<div class="cp-dot${i===palIdx?' active':''}" style="background:#${c.wire.toString(16).padStart(6,'0')}" onclick="pickColor(${i})"></div>`).join('')}
-window.pickColor=function(i){palIdx=i;renderPalette();applyMotoStyle()};
-
-function applyMotoStyle(){
-  if(!motoModel)return;
-  const saved=getSavedColors();
-  // Clear wireframes
-  motoModel.traverse(c=>{if(c.isMesh){const rm=[];c.children.forEach(ch=>{if(ch.isLineSegments)rm.push(ch)});rm.forEach(ch=>{c.remove(ch);ch.geometry?.dispose();ch.material?.dispose()})}});
-
-  if(saved){
-    // Use saved gamification colors with vertex coloring
-    const chasisHex=saved.chasis||'#556677';
-    motoModel.traverse(c=>{
-      if(!c.isMesh)return;
-      c.updateMatrixWorld(true);
-      const pos=c.geometry.attributes.position;const count=pos.count;const mat4=c.matrixWorld;const v=new THREE.Vector3();
-      let colorAttr=c.geometry.attributes.color;
-      if(!colorAttr||colorAttr.count!==count){colorAttr=new THREE.BufferAttribute(new Float32Array(count*3),3);c.geometry.setAttribute('color',colorAttr)}
-      for(let i=0;i<count;i++){
-        v.set(pos.getX(i),pos.getY(i),pos.getZ(i)).applyMatrix4(mat4);
-        let hex=chasisHex;
-        for(const b of ZONE_BOXES){if(inBox(v.x,v.y,v.z,b)){hex=saved[b.id]||hex;break}}
-        colorAttr.setXYZ(i,parseInt(hex.slice(1,3),16)/255,parseInt(hex.slice(3,5),16)/255,parseInt(hex.slice(5,7),16)/255);
-      }
-      colorAttr.needsUpdate=true;
-      if(motoStyleIdx===0){
-        c.material=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.6,metalness:.2,transparent:true,opacity:.4});
-        const wGeo=new THREE.WireframeGeometry(c.geometry);
-        // Wire colors from vertices
-        const wPos=wGeo.attributes.position;const wC=new Float32Array(wPos.count*3);
-        for(let i=0;i<wPos.count;i++){v.set(wPos.getX(i),wPos.getY(i),wPos.getZ(i)).applyMatrix4(mat4);let hex=chasisHex;for(const b of ZONE_BOXES){if(inBox(v.x,v.y,v.z,b)){hex=saved[b.id]||hex;break}}wC[i*3]=parseInt(hex.slice(1,3),16)/255;wC[i*3+1]=parseInt(hex.slice(3,5),16)/255;wC[i*3+2]=parseInt(hex.slice(5,7),16)/255}
-        wGeo.setAttribute('color',new THREE.BufferAttribute(wC,3));
-        c.add(new THREE.LineSegments(wGeo,new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:.7})));
-      }else{
-        c.material=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.85,metalness:0,flatShading:true});
-      }
-    });
-  }else{
-    // Default: uniform palette color
-    const p=PALETTE[palIdx];
-    if(motoStyleIdx===0){
-      const sm=new THREE.MeshStandardMaterial({color:p.solid,roughness:.6,metalness:.2,transparent:true,opacity:.4});
-      const wm=new THREE.LineBasicMaterial({color:p.wire,transparent:true,opacity:.6});
-      motoModel.traverse(c=>{if(c.isMesh){c.material=sm;c.add(new THREE.LineSegments(new THREE.WireframeGeometry(c.geometry),wm))}});
-    }else{
-      const fm=new THREE.MeshStandardMaterial({color:p.wire,roughness:.85,metalness:0,flatShading:true});
-      motoModel.traverse(c=>{if(c.isMesh)c.material=fm});
-    }
-  }
-}
-window.toggleMotoStyle=function(){motoStyleIdx=(motoStyleIdx+1)%2;applyMotoStyle()};
-
-function resize(){const w=viewer.clientWidth,h=viewer.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h)}
-window.addEventListener('resize',resize);resize();
-(function lp(){requestAnimationFrame(lp);ctrl.update();renderer.render(scene,camera)})();
-
-// ═══ INIT ═══
-updateGlobal();renderIcons();renderDocs();renderPalette();renderAd();
-</script>
+        // Iniciar
+        init();
+    </script>
 </body>
 </html>

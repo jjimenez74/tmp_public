@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Panel Admin - Amigo Secreto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 24px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 30px;
+            font-size: 14px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            animation: slideInRight 0.4s ease-out;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .list-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .list-item-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .list-item-amigo {
+            font-size: 12px;
+            color: #999;
+            margin-top: 3px;
+        }
+
+        .list-item-hora {
+            font-size: 11px;
+            color: #bbb;
+        }
+
+        .list-item-number {
+            background: #f8f9ff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .login {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 400px;
+            margin: 100px auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .login h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .login input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .login input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #2ecc71;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            font-size: 12px;
+        }
+
+        .scroll-indicator {
+            text-align: center;
+            color: #999;
+            font-size: 11px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginContainer" class="login" style="display: none;">
+        <h1>🔐 Panel Admin</h1>
+        <p style="color: #999; margin-bottom: 25px;">Ingresa la contraseña</p>
+        <input type="password" id="passwordInput" placeholder="Contraseña" autofocus>
+        <button class="btn-primary" onclick="verificarContrasena()" style="width: 100%;">Entrar</button>
+        <div class="error" id="errorMessage" style="display: none;">Contraseña incorrecta</div>
+    </div>
+
+    <div id="adminContainer" style="display: none;">
+        <div class="container">
+            <div class="header">
+                <h1>👁️ Panel de Control - Amigo Secreto 2026</h1>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number" id="totalAperturas">0</div>
+                        <div class="stat-label">Aperturas</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="percentajeAperturas">0%</div>
+                        <div class="stat-label">Completado</div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="btn-primary" onclick="refrescar()">🔄 Refrescar</button>
+                    <button class="btn-secondary" onclick="descargarJSON()">📥 Descargar</button>
+                    <button class="btn-danger" onclick="reiniciar()">🗑️ Reiniciar</button>
+                    <button class="btn-secondary" onclick="logout()">🚪 Salir</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Aperturas Recientes -->
+                <div class="card">
+                    <h2>📬 Aperturas Recientes</h2>
+                    <div class="list" id="aperturasList">
+                        <div class="empty">
+                            <div class="empty-icon">🎁</div>
+                            <p>Esperando aperturas...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Por Abrir -->
+                <div class="card">
+                    <h2>📭 Pendientes por Abrir</h2>
+                    <div class="list" id="pendientesList">
+                        <div class="empty">
+                            <div class="empty-icon">⏳</div>
+                            <p>Cargando lista...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>✨ Amigo Secreto 2026 - Panel Administrativo Confidencial ✨</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PASSWORD = "1234"; // Cambia esto por tu contraseña
+        const TOTAL_PERSONAS = 42;
+
+        // Verificar si ya está logueado
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('adminLoggedin') === 'true') {
+                mostrarAdmin();
+            } else {
+                mostrarLogin();
+            }
+        });
+
+        function mostrarLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('adminContainer').style.display = 'none';
+        }
+
+        function mostrarAdmin() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('adminContainer').style.display = 'block';
+            actualizar();
+            // Refrescar cada 2 segundos
+            setInterval(actualizar, 2000);
+        }
+
+        function verificarContrasena() {
+            const password = document.getElementById('passwordInput').value;
+            if (password === PASSWORD) {
+                sessionStorage.setItem('adminLoggedin', 'true');
+                mostrarAdmin();
+            } else {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                setTimeout(() => {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function actualizar() {
+            const aperturas = JSON.parse(localStorage.getItem('aperturas') || '[]');
+            aperturas.sort((a, b) => b.timestamp - a.timestamp);
+
+            // Actualizar stats
+            document.getElementById('totalAperturas').textContent = aperturas.length;
+            const porcentaje = Math.round((aperturas.length / TOTAL_PERSONAS) * 100);
+            document.getElementById('percentajeAperturas').textContent = porcentaje + '%';
+
+            // Mostrar aperturas
+            mostrarAperturas(aperturas);
+
+            // Mostrar pendientes
+            mostrarPendientes(aperturas);
+        }
+
+        function mostrarAperturas(aperturas) {
+            const lista = document.getElementById('aperturasList');
+            
+            if (aperturas.length === 0) {
+                lista.innerHTML = `
+                    <div class="empty">
+                        <div class="empty-icon">🎁</div>
+                        <p>Aún no hay aperturas</p>
+                    </div>
+                `;
+                return;
+            }
+
+            lista.innerHTML = aperturas.map(apertura => `
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <div class="list-item-name">
+                            ${apertura.persona} 
+                            <span class="badge">✓</span>
+                        </div>
+                        <div class="list-item-amigo">→ ${apertura.amigo}</div>
+                        <div class="list-item-hora">${apertura.hora}</div>
+                    </div>
+                    <div class="list-item-number">${apertura.numero}</div>
+                </div>
+            `).join('');
+        }
+
+        function mostrarPendientes(aperturas) {
+            const lista = document.getElementById('pendientesList');
+            const nombresAbiertos = new Set(aperturas.map(a => a.persona));
+
+            // Cargar todos los nombres desde amigos.json
+            fetch('amigos.json')
+                .then(r => r.json())
+                .then(data => {
+                    const todosPares = data.amigos.filter((_, i) => i % 2 === 0); // Solo principales
+                    const pendientes = todosPares.filter(p => !nombresAbiertos.has(p.nombre));
+
+                    if (pendientes.length === 0) {
+                        lista.innerHTML = `
+                            <div class="empty">
+                                <div class="empty-icon">🎉</div>
+                                <p>¡Todos abrieron sus sobres!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    lista.innerHTML = pendientes.map(persona => `
+                        <div class="list-item">
+                            <div class="list-item-info">
+                                <div class="list-item-name">⏳ ${persona.nombre}</div>
+                                <div class="list-item-amigo">Espera: ${persona.amigo_secreto}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                });
+        }
+
+        function refrescar() {
+            actualizar();
+            const btn = event.target;
+            btn.textContent = '✓ Actualizado';
+            setTimeout(() => {
+                btn.textContent = '🔄 Refrescar';
+            }, 2000);
+        }
+
+        function descargarJSON() {
+            const aperturas = JSON.parse(localStorage.getItem('aperturas') || '[]');
+            const json = JSON.stringify(aperturas, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `aperturas_amigo_secreto_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function reiniciar() {
+            if (confirm('⚠️ ¿Estás seguro de reiniciar todas las aperturas? Esta acción no se puede deshacer.')) {
+                localStorage.removeItem('aperturas');
+                actualizar();
+                alert('✓ Datos reiniciados correctamente');
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminLoggedin');
+            mostrarLogin();
+            document.getElementById('passwordInput').value = '';
+        }
+
+        // Enter en el input de contraseña
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('passwordInput');
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        verificarContrasena();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
